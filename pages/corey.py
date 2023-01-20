@@ -9,8 +9,8 @@ def corey(s, krw_sor, nw):
     krw = krw_sor * se ** nw
     return krw
 
-def data_clean(file_name):
-    df = pd.read_excel(file_name, header=0, skiprows=[1])
+def data_clean(file):
+    df = pd.read_excel(file, header=0, skiprows=[1])
     df = df[["ID PK", "Sw", "Krw"]]
     # remove the rows where krw is above 1
     df = df[df["Krw"] <= 1.0]
@@ -64,8 +64,7 @@ def convert_results(corey_params):
 
 file = st.file_uploader("Upload Excel file", type="xlsx")
 if file is not None:
-    file_name = file.name
-    grouped_data = data_clean(file_name)
+    grouped_data = data_clean(file)
     corey_params = get_corey_params(grouped_data)
     csv = convert_results(corey_params)
     st.download_button(
