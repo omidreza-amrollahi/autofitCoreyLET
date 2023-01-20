@@ -9,8 +9,8 @@ def let(s, krw_sor, lw, ew, tw):
     krw = krw_sor * ((se ** lw) / (se ** lw + ew * np.abs(1 - se) ** tw))
     return krw
 
-def data_clean(file_name):
-    df = pd.read_excel(file_name, header=0, skiprows=[1])
+def data_clean(file):
+    df = pd.read_excel(file, header=0, skiprows=[1])
     df = df[["ID PK", "Sw", "Krw"]]
     # remove the rows where krw is above 1
     df = df[df["Krw"] <= 1.0]
@@ -73,8 +73,7 @@ def convert_results(let_params):
 
 file = st.file_uploader("Upload Excel file", type="xlsx")
 if file is not None:
-    file_name = file.name
-    grouped_data = data_clean(file_name)
+    grouped_data = data_clean(file)
     let_params = get_let_params(grouped_data)
     csv = convert_results(let_params)
     st.download_button(
